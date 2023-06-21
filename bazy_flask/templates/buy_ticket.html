@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kup bilet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 5px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        select {
+            padding: 5px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kup bilet</h1>
+
+    <form method="post">
+        <label for="first_name">Imię:</label>
+        <input type="text" name="first_name" id="first_name" required>
+
+        <label for="last_name">Nazwisko:</label>
+        <input type="text" name="last_name" id="last_name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="show_id">Film</label>
+        <select name="show_id" id="show_id">
+            {% for show in shows %}
+                <option value="{{show.id_show}}">{{show.title}} {{show.date}} {{show.time}}</option>
+            {% endfor %}
+        </select>
+
+
+        <label for="row">Rząd:</label>
+        <input type="number" name="row" id="row" required>
+
+        <label for="seat">Miejsce:</label>
+        <input type="number" name="seat" id="seat" required>
+
+        <label for="client_type">Typ biletu:</label>
+        <select name="client_type" id="client_type" required>
+            <option value="normal">Standard ({{prices.normal}}zł)</option>
+            <option value="child">Dziecko ({{prices.child}}zł)</option>
+            <option value="student">Student ({{prices.student}}zł)</option>
+        </select>
+
+        <label for="pay_method">Typ płatności:</label>
+        <select name="pay_method" id="pay_method" required>
+            <option value="blik">BLIK (kup teraz)</option>
+            <option value="przelew">Przelew (kup teraz)</option>
+            <option value="gotowka">Gotówka (zarezerwuj)</option>
+            <option value="karta">Karta (zarezerwuj)</option>
+        </select>
+
+        <div>
+            <button type="submit">Kup bilet</button>
+        </div>
+       
+    </form>
+
+</html>

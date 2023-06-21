@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dodaj film</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 5px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        select {
+            padding: 5px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dodaj film</h1>
+
+    <form action="/add-movie" method="post">
+        <label for="title">Tytuł:</label>
+        <input type="text" name="title" id="title" required>
+
+        <label for="director">Reżyser:</label>
+        <input type="text" name="director" id="director" required>
+
+        <label for="year_of_prod">Rok produkcji:</label>
+        <input type="number" name="year_of_prod" id="year_of_prod" required>
+
+        <label for="country">Kraj produkcji:</label>
+        <input type="text" name="country" id="country" required>
+
+        <label for="duration">Czas trwania (w minutach):</label>
+        <input type="number" name="duration" id="duration" required>
+
+        <label for="language">Język:</label>
+        <input type="text" name="language" id="language" required>
+
+        <label for="dimension">Wymiar:</label>
+        <select name="dimension" id="dimension" required>
+            <option value="2D">2D</option>
+            <option value="3D">3D</option>
+            <option value="IMAX">IMAX</option>
+        </select>
+
+        <button type="submit">Dodaj film</button>
+    </form>
+</body>
+</html>

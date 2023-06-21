@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista biletów</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .selected {
+            background-color: #aaf;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #search-input {
+            padding: 6px;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        #delete-button {
+            padding: 8px 20px;
+            font-size: 16px;
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #delete-button:hover {
+            background-color: #d32f2f;
+        }
+
+        #delete-button:focus {
+            outline: none;
+        }
+    </style>
+    <script>
+        function toggleRowSelection(row) {
+            row.classList.toggle("selected");
+        }
+
+        function deleteSelectedRows() {
+            var selectedRows = document.querySelectorAll("tr.selected");
+            for (var i = 0; i < selectedRows.length; i++) {
+                var id = selectedRows[i].querySelector("td:first-child").textContent;
+                deleteRowFromDatabase(id);
+                selectedRows[i].remove();
+            }
+        }
+
+        function deleteRowFromDatabase(id) {
+            // Wywołaj odpowiednie zapytanie do serwera Flask, aby usunąć rekord o danym ID z bazy danych
+            fetch('/delete-ticket/' + id, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Błąd:', error);
+                });
+        }
+
+        function filterTable() {
+            var input = document.getElementById("search-input");
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById("tickets-table");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var visible = false;
+                for (var j = 0; j < cells.length; j++) {
+                    var cell = cells[j];
+                    if (cell) {
+                        var text = cell.textContent || cell.innerText;
+                        if (text.toUpperCase().indexOf(filter) > -1) {
+                            visible = true;
+                            break;
+                        }
+                    }
+                }
+                rows[i].style.display = visible ? "" : "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Lista biletów</h1>
+
+    <div class="container">
+        <input id="search-input" type="text" placeholder="Wyszukaj bilet..." onkeyup="filterTable()">
+        <button id="delete-button" onclick="deleteSelectedRows()">Usuń</button>
+    </div>
+
+    <table id="tickets-table">
+        <tr>
+            <th>ID</th>
+            <th>ID Transakcji</th>
+            <th>Sala</th>
+            <th>Rząd</th>
+            <th>Miejsce</th>
+            <th>Tytuł Filmu</th>
+            <th>Data</th>
+            <th>Godzina</th>
+        </tr>
+        
+        {% for ticket in tickets %}
+        <tr onclick="toggleRowSelection(this)">
+            <td>{{ ticket.id_ticket }}</td>
+            <td>{{ ticket.id_transaction }}</td>
+            <td>{{ ticket.id_room }}</td>
+            <td>{{ ticket.row }}</td>
+            <td>{{ ticket.seat }}</td>
+            <td>{{ ticket.movie_title }}</td>
+            <td>{{ ticket.date }}</td>
+            <td>{{ ticket.time }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

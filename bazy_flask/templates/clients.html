@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista klientów</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .selected {
+            background-color: #aaf;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #search-input {
+            padding: 6px;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        #delete-button {
+            padding: 8px 20px;
+            font-size: 16px;
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #delete-button:hover {
+            background-color: #d32f2f;
+        }
+
+        #delete-button:focus {
+            outline: none;
+        }
+    </style>
+    <script>
+        function toggleRowSelection(row) {
+            row.classList.toggle("selected");
+        }
+
+        function deleteSelectedRows() {
+            var selectedRows = document.querySelectorAll("tr.selected");
+            for (var i = 0; i < selectedRows.length; i++) {
+                var id = selectedRows[i].querySelector("td:first-child").textContent;
+                deleteRowFromDatabase(id);
+                selectedRows[i].remove();
+            }
+        }
+
+        function deleteRowFromDatabase(id) {
+            // Wywołaj odpowiednie zapytanie do serwera Flask, aby usunąć rekord o danym ID z bazy danych
+            fetch('/delete-client/' + id, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Błąd:', error);
+                });
+        }
+
+        function filterTable() {
+            var input = document.getElementById("search-input");
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById("clients-table");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var visible = false;
+                for (var j = 0; j < cells.length; j++) {
+                    var cell = cells[j];
+                    if (cell) {
+                        var text = cell.textContent || cell.innerText;
+                        if (text.toUpperCase().indexOf(filter) > -1) {
+                            visible = true;
+                            break;
+                        }
+                    }
+                }
+                rows[i].style.display = visible ? "" : "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Lista klientów</h1>
+
+    <div class="container">
+        <input id="search-input" type="text" placeholder="Wyszukaj klienta..." onkeyup="filterTable()">
+        <button id="delete-button" onclick="deleteSelectedRows()">Usuń</button>
+    </div>
+
+    <table id="clients-table">
+        <tr>
+            <th>ID</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Email</th>
+            <th>Typ</th>
+        </tr>
+        
+        {% for client in clients %}
+        <tr onclick="toggleRowSelection(this)">
+            <td>{{ client.id_client }}</td>
+            <td>{{ client.first_name }}</td>
+            <td>{{ client.last_name }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.type }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+    

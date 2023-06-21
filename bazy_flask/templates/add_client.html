@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dodaj klienta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 5px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        select {
+            padding: 5px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dodaj klienta</h1>
+
+    <form action="/add-client" method="post">
+        <label for="first_name">Imię:</label>
+        <input type="text" name="first_name" id="first_name" required>
+
+        <label for="last_name">Nazwisko:</label>
+        <input type="text" name="last_name" id="last_name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="client_type">Typ klienta:</label>
+        <select name="client_type" id="client_type" required>
+            <option value="normal">Normal</option>
+            <option value="child">Child</option>
+            <option value="student">Student</option>
+        </select>
+
+        <button type="submit">Dodaj klienta</button>
+    </form>
+</body>
+</html>

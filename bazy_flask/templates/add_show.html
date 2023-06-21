@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dodaj seans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dodaj seans</h1>
+
+    <form method="POST" action="/add-show">
+        <label for="movie">Wybierz film:</label>
+        <select id="movie" name="movie">
+            {% for movie in movies %}
+            <option value="{{ movie.id_movie }}">{{ movie.title }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="room">Wybierz salę:</label>
+        <select id="room" name="room">
+            {% for room in rooms %}
+            <option value="{{ room.id_room }}">{{ room.id_room }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="date">Data:</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time">Godzina:</label>
+        <input type="time" id="time" name="time" required>
+
+        <input type="submit" value="Dodaj">
+    </form>
+</body>
+</html>
